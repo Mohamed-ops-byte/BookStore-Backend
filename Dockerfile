@@ -14,5 +14,5 @@ RUN composer install --no-dev --optimize-autoloader \
  && chmod -R 775 storage bootstrap/cache \
  && php artisan optimize || true
 
-CMD php -S 0.0.0.0:$PORT -t public
+CMD ["sh", "start.sh"]
 
