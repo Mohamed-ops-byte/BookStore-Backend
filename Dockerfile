@@ -7,12 +7,17 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
+
+# انسخ ملفات composer الأول (مهم)
+COPY composer.json composer.lock ./
+
+# نزّل الـ vendor
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+# بعد كده انسخ باقي المشروع
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader \
- && php artisan storage:link || true \
- && chmod -R 775 storage bootstrap/cache \
- && php artisan optimize || true
+# صلاحيات Laravel
+RUN chmod -R 775 storage bootstrap/cache
 
 CMD php -S 0.0.0.0:$PORT -t public
-
