@@ -9,8 +9,10 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
-
-EXPOSE 8000
+RUN composer install --no-dev --optimize-autoloader \
+ && php artisan storage:link || true \
+ && chmod -R 775 storage bootstrap/cache \
+ && php artisan optimize || true
 
 CMD php -S 0.0.0.0:$PORT -t public
+
