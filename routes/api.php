@@ -12,6 +12,13 @@ use App\Http\Controllers\PaymobController;
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/test', function () {
+    return response()->json([
+        'status' => 'ok',
+        'from' => 'Laravel backend',
+    ]);
+});
+
 
 // Public book routes (for customers)
 Route::get('/books', [BookController::class, 'index']);
