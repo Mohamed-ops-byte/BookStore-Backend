@@ -8,15 +8,12 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# انسخ ملفات composer فقط
-COPY composer.json composer.lock ./
-
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# انسخ باقي المشروع
+# انسخ المشروع بالكامل الأول
 COPY . .
 
-# افتح البورت
+# ثبت dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
 EXPOSE 10000
 
 CMD php artisan config:clear && \
