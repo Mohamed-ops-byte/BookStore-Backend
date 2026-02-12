@@ -31,4 +31,7 @@ RUN composer install \
 RUN chmod -R 775 storage bootstrap/cache
 
 # تشغيل السيرفر
-CMD php -S 0.0.0.0:$PORT -t public
+CMD php artisan config:clear && \
+    php artisan migrate --force && \
+    php artisan serve --host=0.0.0.0 --port=10000
+
